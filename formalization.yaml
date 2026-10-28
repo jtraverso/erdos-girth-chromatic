@@ -2,16 +2,20 @@
 version: "v0.4"
 
 project:
-  name: "Erdős' theorem on graphs of large girth and large chromatic number"
+  name: "Graphs of large girth and large chromatic number: Erdős, Mycielski, and the fractional chromatic number of Mycielski graphs"
   description: >-
-    A Lean 4 / Mathlib formalization of Erdős' 1959 theorem: for every g and k there is a finite
-    graph with girth greater than g and chromatic number greater than k. The formalization proves
-    the structural form given by Erdős' probabilistic argument: for every g and every ε > 0, for all
-    sufficiently large n there is a graph on n vertices with no cycle of length at most g in which
-    every independent set has fewer than εn vertices; hence, for all large n, a graph on n vertices
-    with girth greater than g that is not k-colourable. Mathlib has girth and chromatic number but
-    not this theorem; Mycielski's construction (registered separately by another author) gives
-    triangle-free graphs only.
+    A Lean 4 / Mathlib formalization of three classical results on graphs with large chromatic
+    number. (1) Erdős' 1959 theorem: for every g and k there is a finite graph with girth greater
+    than g and chromatic number greater than k, in the structural form given by the probabilistic
+    argument (for every ε > 0 and all large n, a graph on n vertices with girth greater than g whose
+    independent sets have fewer than εn vertices). (2) Mycielski's 1955 construction M(G): it
+    preserves and reflects triangle-freeness, M(G) is (k+1)-colourable exactly when G is
+    k-colourable, χ(M(G)) = χ(G) + 1 for every finite G, and iterating from K₂ gives triangle-free
+    graphs with 3·2ⁿ − 1 vertices and chromatic number n + 2. (3) Larsen, Propp and Ullman (1995):
+    for the fractional chromatic number χ_f (least total weight of a fractional colouring by
+    independent sets), χ_f(M(G)) = χ_f(G) + 1/χ_f(G) for every finite graph G with at least one
+    vertex. Version 2 adds (2) and (3); the statements of version 1 are unchanged. Mathlib has
+    girth and chromatic number but none of these theorems, and no fractional chromatic number.
   authors:
     - "Juan Pablo Traverso Gianini"
   license: "Apache-2.0"
@@ -20,7 +24,7 @@ project:
 
 classification:
   arxiv: ["math.CO"]
-  msc2020: ["05C15", "05C38", "05C80"]
+  msc2020: ["05C15", "05C38", "05C80", "05C72"]
 
 sources:
   - title: "Graph Theory and Probability"
@@ -37,11 +41,45 @@ sources:
     license: "all rights reserved"
     author_endorsement: "n/a"
 
+  - title: "Sur le coloriage des graphs"
+    authors:
+      - "Jan Mycielski"
+    id: "doi:10.4064/cm-3-2-161-162"
+    type: "paper"
+    location: "Colloquium Mathematicum 3 (1955), 161–162"
+    relationship: "formalizes"
+    note: >-
+      The construction and its triangle-free, unbounded-chromatic-number consequence. The palette
+      equivalence, the reflection of triangle-freeness and the size formulas are accompanying
+      statements proved here, not individually numbered results of the paper. The existence of
+      triangle-free graphs of prescribed chromatic number from Mycielski's construction is also
+      registered by another author (PALOMAR-2026-10-14-000006, AItoBit/erdos-627-palomar); this
+      entry adds the general statements for every finite graph and the fractional chromatic number.
+    license: "all rights reserved"
+    author_endorsement: "n/a"
+  - title: "The fractional chromatic number of Mycielski's graphs"
+    authors:
+      - "Michael Larsen"
+      - "James Propp"
+      - "Daniel Ullman"
+    id: "doi:10.1002/jgt.3190190313"
+    type: "paper"
+    location: "Journal of Graph Theory 19 (1995), 411–416"
+    relationship: "formalizes"
+    note: >-
+      The identity χ_f(M(G)) = χ_f(G) + 1/χ_f(G). The upper bound uses the explicit fractional
+      colouring of the paper; the lower bound uses an optimal fractional clique (finite LP strong
+      duality) and weak duality on G minus the closed neighbourhood of an independent set.
+    license: "all rights reserved"
+    author_endorsement: "not-contacted"
+
 status:
   scope: >-
-    Proved for every g, every ε > 0 (respectively every k) and all sufficiently large n, with
-    explicit (non-asymptotic) parameters inside the proof; the existence statement holds for every
-    g and k.
+    Erdős: proved for every g, every ε > 0 (respectively every k) and all sufficiently large n,
+    with explicit (non-asymptotic) parameters inside the proof; the existence statement holds for
+    every g and k. Mycielski: for every graph (finite where chromatic numbers are compared).
+    Larsen–Propp–Ullman: for every finite graph with at least one vertex (for the empty graph
+    χ_f = 0 and the identity fails).
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -71,6 +109,23 @@ automation:
         spend_usd: "subscription-based"
         hardware: "local machine"
       prompting_notes: "Natural-language instructions in Spanish, directed by the author."
+    - method: "agent"
+      models: ["OpenAI Codex"]
+      framework: "OpenAI Codex"
+      tool_setup: >-
+        Version 2, Mycielski part: wrote the Mycielski definitions, Lean proofs and audit in the
+        author's separate repository jtraverso/mycielski, merged here unchanged.
+      prompting_notes: "Natural-language instructions in Spanish from the author."
+    - method: "agent"
+      models: ["Claude Opus 5.5"]
+      framework: "Claude Code (Anthropic)"
+      tool_setup: >-
+        Version 2, fractional part: definitions of fractional colourings and cliques, weak and
+        strong duality and the Larsen–Propp–Ullman proof (FractionalLib/), written and checked
+        locally with Lean v4.35.0-rc3. The finite LP strong duality module
+        FractionalLib/FiniteLPDuality.lean is reused byte-identically from the author's Lean
+        development of Erdős #81 Paper I (Apache-2.0).
+      prompting_notes: "Natural-language instructions in Spanish, directed by the author."
   spend_usd: "subscription-based"
   notes: >-
     The results were chosen by the human author; the Lean proofs are AI-generated and
@@ -97,11 +152,14 @@ review:
     statement and header unchanged, and confirmed by `lake build`, `#print axioms` and a
     comparison of the fully elaborated Challenge and Solution types that the proofs use no `sorry`
     and only propext, Classical.choice and Quot.sound. The author directed the work and approved
-    the statements. No independent human mathematical review has been performed. The result is
-    classical; no mathematical novelty is claimed.
+    the statements. For version 2 the agent also checked that the version 1 statements are
+    contained verbatim in the new Challenge, compared the new statements with Mycielski (1955) and
+    Larsen–Propp–Ullman (1995), and tested the identity on K₁ (χ_f = 1; M(K₁) is K₂ plus an
+    isolated vertex, χ_f = 2) and K₂ (M(K₂) = C₅, χ_f = 5/2). No independent human mathematical
+    review has been performed. The results are classical; no mathematical novelty is claimed.
 
 alignment:
-  namespace: "ErdosGirthChromatic"
+  namespace: "ErdosGirthChromatic, Mycielski, FractionalColouring"
   statements:
     - source: "Erdős (1959), structural form: girth > g and independence number < εn"
       lean: "ErdosGirthChromatic.exists_girth_indep"
@@ -115,6 +173,42 @@ alignment:
       lean: "ErdosGirthChromatic.exists_girth_chromaticNumber"
       module: "Challenge"
       status: "proved"
+    - source: "Mycielski (1955): vertex count 2|V| + 1"
+      lean: "Mycielski.card_vertex"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski (1955): M(G) triangle-free iff G triangle-free"
+      lean: "Mycielski.graph_cliqueFree_three_iff"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski (1955): M(G) is (k+1)-colourable iff G is k-colourable"
+      lean: "Mycielski.colorable_succ_iff"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski (1955): χ(M(G)) = χ(G) + 1 for finite G"
+      lean: "Mycielski.chromaticNumber_graph"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski family from K₂: 3·2ⁿ − 1 vertices"
+      lean: "Mycielski.card_familyVertex"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski family: triangle-free"
+      lean: "Mycielski.family_cliqueFree_three"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski family: chromatic number n + 2"
+      lean: "Mycielski.family_chromaticNumber"
+      module: "Challenge"
+      status: "proved"
+    - source: "Mycielski (1955): triangle-free graphs of unbounded chromatic number"
+      lean: "Mycielski.exists_triangleFree_chromaticNumber_ge"
+      module: "Challenge"
+      status: "proved"
+    - source: "Larsen–Propp–Ullman (1995): χ_f(M(G)) = χ_f(G) + 1/χ_f(G)"
+      lean: "FractionalColouring.fracChromaticNumber_mycielski"
+      module: "Challenge"
+      status: "proved"
 
 acknowledgements: >-
-  Mathlib and the Lean community; Harmonic's Aristotle.
+  Mathlib and the Lean community; Harmonic's Aristotle; OpenAI Codex.

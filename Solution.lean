@@ -7,6 +7,8 @@ module
 
 public import Mathlib
 public import GirthLib.ErdosGirth
+public import Mycielski.Family
+public import FractionalLib.LarsenProppUllman
 
 /-!
 # Proofs of the statements in `Challenge.lean`
@@ -16,6 +18,13 @@ The theorems are proved in `GirthLib/ErdosGirth.lean` and `GirthLib/ErdosGirthAu
 sums: graphs on `2n` vertices are weighted by `p^{|E|}(1 − p)^{(2n choose 2) − |E|}`, the expected
 number of short cycles and of independent `t`-sets is bounded, a good graph is chosen, one vertex is
 deleted from each short cycle, and the graph induced on `n` of the remaining vertices is taken.
+
+The Mycielski statements (namespace `Mycielski`) are the declarations of the library
+`Mycielski/` (Basic, Coloring, Family), whose definitions are copied verbatim in `Challenge.lean`.
+The fractional colouring definitions and `FractionalColouring.fracChromaticNumber_mycielski`
+(Larsen–Propp–Ullman) are the declarations of `FractionalLib/Basic.lean` and
+`FractionalLib/LarsenProppUllman.lean`; strong linear-programming duality comes from
+`FractionalLib/FiniteLPDuality.lean` (`FiniteLP.covering_packing_duality`).
 -/
 
 @[expose] public section

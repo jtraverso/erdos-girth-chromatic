@@ -4,7 +4,16 @@
   "theorem_names": [
     "ErdosGirthChromatic.exists_girth_indep",
     "ErdosGirthChromatic.exists_girth_not_colorable",
-    "ErdosGirthChromatic.exists_girth_chromaticNumber"
+    "ErdosGirthChromatic.exists_girth_chromaticNumber",
+    "Mycielski.card_vertex",
+    "Mycielski.graph_cliqueFree_three_iff",
+    "Mycielski.colorable_succ_iff",
+    "Mycielski.chromaticNumber_graph",
+    "Mycielski.card_familyVertex",
+    "Mycielski.family_cliqueFree_three",
+    "Mycielski.family_chromaticNumber",
+    "Mycielski.exists_triangleFree_chromaticNumber_ge",
+    "FractionalColouring.fracChromaticNumber_mycielski"
   ],
   "definition_names": [],
   "permitted_axioms": [

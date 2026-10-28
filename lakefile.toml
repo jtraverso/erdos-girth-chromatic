@@ -1,6 +1,6 @@
 name = "erdos_girth"
 version = "0.1.0"
-defaultTargets = ["GirthLib", "Challenge", "Solution"]
+defaultTargets = ["GirthLib", "Mycielski", "FractionalLib", "Challenge", "Solution"]
 requiresModuleSystem = true
 
 [leanOptions]
@@ -15,6 +15,14 @@ rev = "v4.35.0-rc3"
 [[lean_lib]]
 name = "GirthLib"
 globs = ["GirthLib.+"]
+
+[[lean_lib]]
+name = "Mycielski"
+globs = ["Mycielski.+"]
+
+[[lean_lib]]
+name = "FractionalLib"
+globs = ["FractionalLib.+"]
 
 [[lean_lib]]
 name = "Challenge"
